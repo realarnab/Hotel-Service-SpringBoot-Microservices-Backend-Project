@@ -20,7 +20,8 @@ public class StaffController {
 
     @GetMapping
     public ResponseEntity<?> getStaffs(){
-        return  new ResponseEntity<>(null, HttpStatus.OK);
+        List<StaffDto> all = staffService.getAll();
+        return  new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @PostMapping

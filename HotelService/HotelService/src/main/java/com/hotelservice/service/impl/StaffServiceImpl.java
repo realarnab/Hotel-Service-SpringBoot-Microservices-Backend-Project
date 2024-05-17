@@ -7,6 +7,9 @@ import com.hotelservice.service.StaffService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StaffServiceImpl implements StaffService {
     private StaffRepository staffRepository;
@@ -22,6 +25,13 @@ public class StaffServiceImpl implements StaffService {
         Staff staff = mapToEntity(staffDto);
         Staff saved = staffRepository.save(staff);
         return mapToDto(saved);
+    }
+
+    @Override
+    public List<StaffDto> getAll() {
+        List<Staff> all = staffRepository.findAll();
+        List<StaffDto> staffs = all.stream().map((element) -> modelMapper.map(element, StaffDto.class)).collect(Collectors.toList());
+        return staffs;
     }
 
     public Staff mapToEntity(StaffDto staffDto){
