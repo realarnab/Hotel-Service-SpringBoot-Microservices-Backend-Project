@@ -1,8 +1,11 @@
 package com.userservice.controller;
 
+import com.userservice.entity.User;
 import com.userservice.payload.UserDto;
 import com.userservice.service.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +27,20 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    @CircuitBreaker(name = "ratingHotelBreaker",fallbackMethod = "ratingHotelFallback") //implementing circuit breaker
     public ResponseEntity<UserDto> getUserById(@PathVariable String userId){
         UserDto userById = userService.getUserById(userId);
         return new ResponseEntity<>(userById,HttpStatus.OK);
+    }
+
+    //Creating fallback method for circuit breaker
+    public ResponseEntity<UserDto> ratingHotelFallback(String userId,Exception ex){
+        UserDto userDto=new UserDto();
+        userDto.setUserId(userId);
+        userDto.setName("Dummy");
+        userDto.setEmail("dummy@gmail.com");
+        userDto.setAbout("This user created dummy because service is down!");
+        return new ResponseEntity<>(userDto,HttpStatus.OK);
     }
 
     @GetMapping
