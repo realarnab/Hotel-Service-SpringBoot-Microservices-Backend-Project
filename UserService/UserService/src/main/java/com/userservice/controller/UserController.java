@@ -4,6 +4,7 @@ import com.userservice.entity.User;
 import com.userservice.payload.UserDto;
 import com.userservice.service.UserService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -30,7 +31,8 @@ public class UserController {
     //int retryCount=1;
     @GetMapping("/{userId}")
     //@CircuitBreaker(name = "ratingHotelBreaker",fallbackMethod = "ratingHotelFallback") //implementing circuit breaker
-    @Retry(name="ratingHotelService",fallbackMethod = "ratingHotelFallback") //implementing retry module
+    //@Retry(name="ratingHotelService",fallbackMethod = "ratingHotelFallback") //implementing retry module
+    @RateLimiter(name="userRateLimiter",fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<UserDto> getUserById(@PathVariable String userId){
 //        System.out.println("Retry count: "+retryCount);
 //        retryCount++;
