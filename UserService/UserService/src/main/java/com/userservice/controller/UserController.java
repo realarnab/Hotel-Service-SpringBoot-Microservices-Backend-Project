@@ -4,6 +4,7 @@ import com.userservice.entity.User;
 import com.userservice.payload.UserDto;
 import com.userservice.service.UserService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,13 @@ public class UserController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    //int retryCount=1;
     @GetMapping("/{userId}")
-    @CircuitBreaker(name = "ratingHotelBreaker",fallbackMethod = "ratingHotelFallback") //implementing circuit breaker
+    //@CircuitBreaker(name = "ratingHotelBreaker",fallbackMethod = "ratingHotelFallback") //implementing circuit breaker
+    @Retry(name="ratingHotelService",fallbackMethod = "ratingHotelFallback") //implementing retry module
     public ResponseEntity<UserDto> getUserById(@PathVariable String userId){
+//        System.out.println("Retry count: "+retryCount);
+//        retryCount++;
         UserDto userById = userService.getUserById(userId);
         return new ResponseEntity<>(userById,HttpStatus.OK);
     }
