@@ -13,6 +13,22 @@ spring:
     name: USER-SERVICE
   config:
     import: configserver:http://localhost:8085
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-53537470.okta.com/oauth2/default
+      client:
+        registration:
+          my-internL-client:
+            provider: okta
+            authorization-grant-type: client_credentials
+            scope: internal
+            client-id: 0oah8y57legTuuUsC5d7
+            client-secret: y_8a3NhiwIcEb2VS35VKfaWFoMzGGE7TKZQxEVexiMDxNdaFs9xGwwhKqUP4EY3Y
+        provider:
+          okta:
+            issuer-uri: https://dev-53537470.okta.com/oauth2/default
   jpa:
    hibernate:
      ddl-auto: update
@@ -73,4 +89,8 @@ resilience4j:
         limit-for-period: 2
         timeout-duration: 0s
 
+okta:
+  oauth2:
+    issuer: https://dev-53537470.okta.com/oauth2/default
+    audience: api://default
 
