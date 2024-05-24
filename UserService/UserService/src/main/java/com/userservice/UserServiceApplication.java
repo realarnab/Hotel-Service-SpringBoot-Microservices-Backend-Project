@@ -19,19 +19,5 @@ public class UserServiceApplication {
 		SpringApplication.run(UserServiceApplication.class, args);
 	}
 
-	@Bean
-	public ModelMapper getModelMapper(){
-		return new ModelMapper();
-	}
-
-	@Bean
-	@LoadBalanced //to balance the load of the services
-	public RestTemplate getRestTemplate (){
-		return new RestTemplate();
-	}
-	@Bean
-	public Logger getLogger(){
-		return LoggerFactory.getLogger("My Logger");
-	}
 
 }
