@@ -29,7 +29,7 @@ public class MyConfig {
     private ClientRegistrationRepository clientRegistrationRepository;
     @Autowired
     private OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
-    
+
     //declaring the bean of Oauth2AuthorizeClient manager
     @Bean
     public OAuth2AuthorizedClientManager manager(
