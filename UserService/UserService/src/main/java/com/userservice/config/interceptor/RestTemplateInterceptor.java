@@ -1,5 +1,7 @@
 package com.userservice.config.interceptor;
 
+import com.netflix.discovery.converters.Auto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -12,6 +14,7 @@ import java.io.IOException;
 
 public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
+    @Autowired
     private OAuth2AuthorizedClientManager manager;
 
     public RestTemplateInterceptor(OAuth2AuthorizedClientManager manager) {
